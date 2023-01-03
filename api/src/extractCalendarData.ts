@@ -49,22 +49,36 @@ export const extractCalendarData = (
 
   const itemDescriptions: ItemDescription[] = $('.twRyoPhotoEventsNotes')
     .map((idx, element) => {
+      // seems the data shape is changing sometimes, maybe when a human updates the calendar.
+      // checkout the diff between "onlyp" vs "firstp", "middlep" and "lastp"
+      // return {
+      //   eventDescription: $(element).find('.onlyp').next().text(),
+      //   eventDescription2: $(element).find('.onlyp').next().next().text(),
+      //   eventDescription3: $(element)
+      //     .find('.onlyp')
+      //     .next()
+      //     .next()
+      //     .next()
+      //     .text(),
+      //   eventDescription4: $(element)
+      //     .find('.onlyp')
+      //     .next()
+      //     .next()
+      //     .next()
+      //     .next()
+      //     .text(),
+      // };
       return {
-        eventDescription: $(element).find('.onlyp').next().text(),
-        eventDescription2: $(element).find('.onlyp').next().next().text(),
-        eventDescription3: $(element)
-          .find('.onlyp')
-          .next()
-          .next()
-          .next()
-          .text(),
-        eventDescription4: $(element)
-          .find('.onlyp')
-          .next()
-          .next()
-          .next()
-          .next()
-          .text(),
+        eventDescription: $(element).find('.firstp').text(),
+        eventDescription2: $(element).find('.middlep').text(),
+        eventDescription3: $(element).find('.lastp').text(),
+        // eventDescription4: $(element)
+        //   .find('.onlyp')
+        //   .next()
+        //   .next()
+        //   .next()
+        //   .next()
+        //   .text(),
       };
     })
     .get();
@@ -89,5 +103,10 @@ export const extractCalendarData = (
     return acc;
   }, []);
 
-  return consolidatedData;
+  const onlyStoryBridgeStuff: ParsedCalendarItem[] = consolidatedData.filter(
+    (el: ParsedCalendarItem) =>
+      el.location.toLowerCase().includes('story bridge')
+  );
+
+  return onlyStoryBridgeStuff;
 };
